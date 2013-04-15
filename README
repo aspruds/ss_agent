@@ -1,4 +1,1 @@
-This is your new Play 2.1 application
-=====================================
-
-This file will be packaged with your application, when using `play dist`.
+ss.lv agent is a Scala Play application which allows you to parse/aggregate car classifieds from ss.lv
