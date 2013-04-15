@@ -1,0 +1,33 @@
+@(results: List[(Task, List[Advert])])
+
+@main("SS sludinājumi") {
+    @for((task, adverts) <- results) {
+        <div class="resultContainer">
+            <h1>@task.name</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <td>Image</td>
+                        <td>Description</td>
+                        <td>Year</td>
+                        <td>Engine</td>
+                        <td>Mileage</td>
+                        <td>Price</td>
+                    </tr>
+                </thead>
+                <tbody>
+                @for(a <- adverts) {
+                    <tr>
+                        <td><img src="@a.imageUrl"/></td>
+                        <td><a href="@a.fullUrl">@a.description</a</td>
+                        <td>@a.year</td>
+                        <td>@a.engineSize</td>
+                        <td>@a.mileage'000</td>
+                        <td>@a.price @a.currency</td>
+                    </tr>
+                }
+                </tbody>
+            </table>
+        </div>
+    }
+}

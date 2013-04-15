@@ -1,0 +1,8 @@
+body {font-family: Arial, Helvetica, sans-serif; font-size: 14px; margin: auto;}
+div.resultContainer {width: 800px; margin: auto;}
+table {border-collapse: collapse; margin: auto; width: 100%;}
+td {padding: 4px;}
+thead {background: #3C5FB3;font-weight: bold; color: #DCF3FF;}
+a {color: #000; text-decoration: none;}
+a:hover {text-decoration: underline;}
+a:visited {color: #B9B9B9;}
