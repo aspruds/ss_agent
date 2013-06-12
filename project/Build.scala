@@ -16,7 +16,6 @@ object ApplicationBuild extends Build {
 
 
   val main = play.Project(appName, appVersion, appDependencies).settings(
-        templatesImport += "com.spruds.ss.HttpUtils._"
+        templatesImport += "com.spruds.ss.model._"
   )
-
 }

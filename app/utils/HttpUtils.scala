@@ -1,95 +1,55 @@
-package com.spruds.ss
+package com.spruds.ss.utils
 
 import org.jsoup._
 import scala.math._
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.TreeMap
+import com.spruds.ss.model._
 
 object HttpUtils {
-	var url = "http://www.ss.lv"
-
-    abstract class FuelType
-    case class Diesel() extends FuelType
-    case class Petrol() extends FuelType
-    case class PetrolGas() extends FuelType
-
-    abstract class CabinType
-    case class Estate() extends CabinType
-    case class Sedan() extends CabinType
-
-    abstract class GearboxType
-    case class Automatic() extends GearboxType
-    case class Manual() extends GearboxType
-
-	class Task(theUrl: String, theName: String) {
-		var url: String = theUrl
-		var name: String = theName
-		var priceMin: Option[Int] = None
-		var priceMax: Option[Int] = None
-		var mileageMin: Option[Int] = None
-		var mileageMax: Option[Int] = None
-		var fuel: FuelType = _
-		var cabin: CabinType = _
-		var gearbox: GearboxType = _
-		var rails: Boolean = false
-
-		override def toString =	"[Task: url=" + url + " name=" + name + "]"
-		override def clone = this
-	}
-
-	class Advert() {
-        var description: String = _
-        var imageUrl: String = _
-        var url: String = _
-        var year: Int = _
-        var engineSize: String = _
-        var mileage: Int = _
-        var price: Int = _
-        var currency: String = _
-
-        def fullUrl: String = HttpUtils.url + url
-	}
+	val url = "http://www.ss.lv"
 	
 	def tasks: List[Task] = {
-	    val saab93Petrol = new Task(url + "/lv/transport/cars/saab/9-3/search-result/", "SAAB 9-3 Petrol")
+	    val saab93Petrol = new Task("saab/9-3", "SAAB 9-3 Petrol")
 	    saab93Petrol.fuel = new Petrol
 	    saab93Petrol.cabin = new Estate
         saab93Petrol.gearbox = new Manual
 		saab93Petrol.rails = true
 		
-	    val saab93Diesel = new Task(url + "/lv/transport/cars/saab/9-3/search-result/", "SAAB 9-3 Diesel")
+	    val saab93Diesel = new Task("saab/9-3", "SAAB 9-3 Diesel")
+	    saab93Diesel.priceMax = Some(5700)
 	    saab93Diesel.fuel = new Diesel
 	    saab93Diesel.cabin = new Estate
         saab93Diesel.gearbox = new Manual
         saab93Diesel.rails = true
 
-	    val saab95Petrol = new Task(url + "/lv/transport/cars/saab/9-5/search-result/", "SAAB 9-5 Petrol")
+	    val saab95Petrol = new Task("saab/9-5", "SAAB 9-5 Petrol")
 	    saab95Petrol.fuel = new Petrol
 	    saab95Petrol.cabin = new Estate
 	    saab95Petrol.gearbox = new Manual
 	    saab95Petrol.mileageMax = Some(220000)
 	    saab95Petrol.rails = true
 	    
-	    val saab95LPG = new Task(url + "/lv/transport/cars/saab/9-5/search-result/", "SAAB 9-5 LPG")
+	    val saab95LPG = new Task("saab/9-5", "SAAB 9-5 LPG")
 	    saab95LPG.fuel = new PetrolGas
 	    saab95LPG.cabin = new Estate
 	    saab95LPG.gearbox = new Manual
 	    saab95LPG.mileageMax = Some(220000)
 	    saab95LPG.rails = true	    
 
-	    val volvoV40Petrol = new Task(url + "/lv/transport/cars/volvo/v40/search-result/", "Volvo V40 Petrol")
+	    val volvoV40Petrol = new Task("volvo/v40", "Volvo V40 Petrol")
         volvoV40Petrol.priceMin = Some(2000)
         volvoV40Petrol.mileageMax = Some(200000)
         volvoV40Petrol.fuel = new Petrol
         volvoV40Petrol.gearbox = new Manual
         volvoV40Petrol.rails = true
 
-	    val volvoV50 = new Task(url + "/lv/transport/cars/volvo/v50/search-result/", "Volvo V50")
+	    val volvoV50 = new Task("volvo/v50", "Volvo V50")
         volvoV50.mileageMax = Some(200000)
         volvoV50.gearbox = new Manual
 		volvoV50.rails = true
-		volvoV50.priceMax = Some(6000)
+		volvoV50.priceMax = Some(5700)
 		
         List(
             saab93Petrol,
@@ -106,7 +66,8 @@ object HttpUtils {
 	}
 	
 	def fetchAdverts(task: Task): List[Advert] = {
-	    val connection = Jsoup.connect(task.url);
+	    val connection = Jsoup.connect(url + task.url);
+	    println(url + task.url)
 		
 	    // handle fuel type
 	    val fuelTypeId = task.fuel match {
@@ -148,8 +109,6 @@ object HttpUtils {
 		}
 		
 		val doc = connection.post()
-		
-		println(doc)
 
 		val descriptions = doc.select("div.d1 a").map(_.text())
         val urls = doc.select("div.d1 a").map(_.attr("href"))
