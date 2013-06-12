@@ -32,6 +32,7 @@ object HttpUtils {
 		var fuel: FuelType = _
 		var cabin: CabinType = _
 		var gearbox: GearboxType = _
+		var rails: Boolean = false
 
 		override def toString =	"[Task: url=" + url + " name=" + name + "]"
 		override def clone = this
@@ -52,37 +53,49 @@ object HttpUtils {
 	
 	def tasks: List[Task] = {
 	    val saab93Petrol = new Task(url + "/lv/transport/cars/saab/9-3/search-result/", "SAAB 9-3 Petrol")
-	    saab93Petrol.priceMax = Some(5000);
 	    saab93Petrol.fuel = new Petrol
 	    saab93Petrol.cabin = new Estate
         saab93Petrol.gearbox = new Manual
-
+		saab93Petrol.rails = true
+		
 	    val saab93Diesel = new Task(url + "/lv/transport/cars/saab/9-3/search-result/", "SAAB 9-3 Diesel")
-	    saab93Diesel.priceMax = Some(4500);
 	    saab93Diesel.fuel = new Diesel
 	    saab93Diesel.cabin = new Estate
         saab93Diesel.gearbox = new Manual
+        saab93Diesel.rails = true
 
 	    val saab95Petrol = new Task(url + "/lv/transport/cars/saab/9-5/search-result/", "SAAB 9-5 Petrol")
 	    saab95Petrol.fuel = new Petrol
 	    saab95Petrol.cabin = new Estate
 	    saab95Petrol.gearbox = new Manual
+	    saab95Petrol.mileageMax = Some(220000)
+	    saab95Petrol.rails = true
+	    
+	    val saab95LPG = new Task(url + "/lv/transport/cars/saab/9-5/search-result/", "SAAB 9-5 LPG")
+	    saab95LPG.fuel = new PetrolGas
+	    saab95LPG.cabin = new Estate
+	    saab95LPG.gearbox = new Manual
+	    saab95LPG.mileageMax = Some(220000)
+	    saab95LPG.rails = true	    
 
 	    val volvoV40Petrol = new Task(url + "/lv/transport/cars/volvo/v40/search-result/", "Volvo V40 Petrol")
         volvoV40Petrol.priceMin = Some(2000)
-        volvoV40Petrol.priceMax = Some(4000)
+        volvoV40Petrol.mileageMax = Some(200000)
         volvoV40Petrol.fuel = new Petrol
         volvoV40Petrol.gearbox = new Manual
+        volvoV40Petrol.rails = true
 
 	    val volvoV50 = new Task(url + "/lv/transport/cars/volvo/v50/search-result/", "Volvo V50")
-        volvoV50.priceMax = Some(4500)
         volvoV50.mileageMax = Some(200000)
         volvoV50.gearbox = new Manual
-
+		volvoV50.rails = true
+		volvoV50.priceMax = Some(6000)
+		
         List(
             saab93Petrol,
             saab93Diesel,
             saab95Petrol,
+            saab95LPG,
             volvoV40Petrol,
             volvoV50
         )
@@ -94,7 +107,7 @@ object HttpUtils {
 	
 	def fetchAdverts(task: Task): List[Advert] = {
 	    val connection = Jsoup.connect(task.url);
-
+		
 	    // handle fuel type
 	    val fuelTypeId = task.fuel match {
 	        case _ : Petrol => "493"
@@ -128,8 +141,15 @@ object HttpUtils {
 
         // to sell only
         connection.data("sid", "1")
-
+        
+        if(task.rails) {
+			connection.data("checkbox[961]", "1")
+			connection.data("opt[961][]", "17311")
+		}
+		
 		val doc = connection.post()
+		
+		println(doc)
 
 		val descriptions = doc.select("div.d1 a").map(_.text())
         val urls = doc.select("div.d1 a").map(_.attr("href"))
