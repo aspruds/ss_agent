@@ -67,7 +67,6 @@ object HttpUtils {
 	
 	def fetchAdverts(task: Task): List[Advert] = {
 	    val connection = Jsoup.connect(url + task.url);
-	    println(url + task.url)
 		
 	    // handle fuel type
 	    val fuelTypeId = task.fuel match {
