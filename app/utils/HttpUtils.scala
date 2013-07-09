@@ -6,6 +6,9 @@ import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.TreeMap
 import com.spruds.ss.model._
+import org.jsoup.nodes.Document
+import play.api.cache.Cache
+import play.api.Play.current
 
 object HttpUtils {
 	val url = "http://www.ss.lv"
@@ -106,8 +109,18 @@ object HttpUtils {
 			connection.data("checkbox[961]", "1")
 			connection.data("opt[961][]", "17311")
 		}
-		
-		val doc = connection.post()
+
+    val key: String = url + task.url + connection.request.data.toString
+    val html: String = Cache.getOrElse[String](key) { null }
+    var doc: Document = null
+
+    if(html != null) {
+      doc = Jsoup.parse(html)
+    }
+    else {
+      doc = connection.post
+      Cache.set(key, doc.html())
+    }
 
 		val descriptions = doc.select("div.d1 a").map(_.text())
         val urls = doc.select("div.d1 a").map(_.attr("href"))
@@ -128,13 +141,13 @@ object HttpUtils {
                 ad.engineSize = engines(i)
                 ad.imageUrl = imageUrls(i)
 
-                var mileage = mileages(i)
+                val mileage = mileages(i)
                 if(mileage.contains(" ")) {
                     var mileageParts = mileage.split(" ")
                     ad.mileage = mileageParts(0).toInt
                 }
 
-                var price = prices(i)
+                val price = prices(i)
                 if(price.contains(" ")) {
                     var priceParts = price.split(" ")
                     ad.price = priceParts(0).replace(",", "").toInt
