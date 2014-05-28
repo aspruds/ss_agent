@@ -1,4 +1,4 @@
-package com.spruds.ss.model
+package models
 
 class Task(thePath: String, theName: String) {
 	var url: String = "/lv/transport/cars/" + thePath + "/search-result/";

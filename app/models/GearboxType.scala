@@ -1,4 +1,4 @@
-package com.spruds.ss.model
+package models
 
 abstract class GearboxType
 case class Automatic() extends GearboxType

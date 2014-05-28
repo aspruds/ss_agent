@@ -1,5 +1,5 @@
-package com.spruds.ss.model
-import com.spruds.ss.utils.HttpUtils
+package models
+import utils.HttpUtils
 
 class Advert() {
 	var description: String = _

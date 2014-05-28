@@ -1,11 +1,11 @@
-package com.spruds.ss.utils
+package utils
 
 import org.jsoup._
 import scala.math._
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
 import scala.collection.immutable.TreeMap
-import com.spruds.ss.model._
+import models._
 import org.jsoup.nodes.Document
 import play.api.cache.Cache
 import play.api.Play.current
