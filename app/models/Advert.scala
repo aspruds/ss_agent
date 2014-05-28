@@ -1,15 +1,16 @@
 package models
+
 import utils.HttpUtils
 
-class Advert() {
-	var description: String = _
-	var imageUrl: String = _
-	var url: String = _
-	var year: Int = _
-	var engineSize: String = _
-	var mileage: Int = _
-	var price: Int = _
-	var currency: String = _
+case class Advert(
+                   description: String,
+                   imageUrl: String,
+                   url: String,
+                   year: Int,
+                   engineSize: String,
+                   mileage: Option[Int],
+                   price: Option[Price]
+                   ) {
 
-	def fullUrl: String = HttpUtils.url + url
+  def fullUrl: String = HttpUtils.url + url
 }

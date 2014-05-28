@@ -23,7 +23,11 @@
                         <td>@a.year</td>
                         <td>@a.engineSize</td>
                         <td>@a.mileage'000</td>
-                        <td>@a.currency@a.price</td>
+                        <td>
+                            @for(p <- a.price) {
+                                @p.currency@p.price
+                            }
+                        </td>
                     </tr>
                 }
                 </tbody>
