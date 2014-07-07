@@ -1,8 +1,8 @@
-package models
+package models.classified
 
 import utils.HttpUtils
 
-case class Advert(
+case class Advertisement(
                    description: String,
                    imageUrl: String,
                    url: String,

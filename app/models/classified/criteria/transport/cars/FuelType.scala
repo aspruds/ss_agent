@@ -1,6 +1,6 @@
-package models
+package models.classified.criteria.transport.cars
 
-abstract class FuelType
+abstract sealed class FuelType
 
 case class Diesel() extends FuelType
 

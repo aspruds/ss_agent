@@ -1,4 +1,4 @@
-package models
+package models.classified.criteria.transport.cars
 
 abstract class GearboxType
 

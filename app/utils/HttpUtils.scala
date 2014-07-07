@@ -1,5 +1,8 @@
 package utils
 
+import models.classified.{Price, Advertisement}
+import models.classified.criteria.transport.cars._
+import models.tasks.Task
 import org.jsoup._
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
@@ -62,7 +65,7 @@ object HttpUtils {
     )
   }
 
-  def parseTasks: List[(Task, List[Advert])] = {
+  def parseTasks: List[(Task, List[Advertisement])] = {
     for (t <- tasks) yield (t -> fetchAdverts(t))
   }
 
@@ -90,7 +93,7 @@ object HttpUtils {
     }
   }
 
-  def fetchAdverts(task: Task): List[Advert] = {
+  def fetchAdverts(task: Task): List[Advertisement] = {
     val connection = Jsoup.connect(url + task.url);
 
     // handle fuel type
@@ -154,12 +157,12 @@ object HttpUtils {
     val prices = doc.select("tr[height=44] td:eq(6)").map(_.text())
     val imageUrls = doc.select("td.msga2 img").map(_.attr("src"))
 
-    val adverts = new ListBuffer[Advert]
+    val adverts = new ListBuffer[Advertisement]
     for (i <- 0 until descriptions.size) {
       val year = years(i)
       if (year != "-") {
 
-        val ad = Advert(
+        val ad = Advertisement(
           description = descriptions(i),
           url = urls(i),
           year = years(i).toInt,

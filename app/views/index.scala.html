@@ -1,4 +1,6 @@
-@(results: List[(Task, List[Advert])])
+@(results: List[(models.tasks.Task, List[models.classified.Advertisement])])
+@import models.tasks.Task
+@import models.classified.Advertisement
 
 @main("SS sludinājumi") {
     @for((task, adverts) <- results) {

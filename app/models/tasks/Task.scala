@@ -1,6 +1,8 @@
-package models
+package models.tasks
 
-class Task(thePath: String, theName: String) {
+import models.classified.criteria.transport.cars.{CabinType, FuelType, GearboxType}
+case class Task(
+  thePath: String, theName: String) {
   var url: String = "/lv/transport/cars/" + thePath + "/search-result/";
   var name: String = theName
   var priceMin: Option[Int] = None
