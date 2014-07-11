@@ -1,15 +1,17 @@
 package utils
 
-import models.classified.{Price, Advertisement}
-import models.classified.criteria.transport.cars._
+import models.classifieds.criteria.transport.cars._
+import models.classifieds.details.Car
+import models.classifieds.{Ad, Price}
 import models.tasks.Task
+import models.tasks.ui.TaskWithAds
 import org.jsoup._
+import org.jsoup.nodes.Document
+import play.api.Play.current
+import play.api.cache.Cache
+
 import scala.collection.JavaConversions._
 import scala.collection.mutable.ListBuffer
-import models._
-import org.jsoup.nodes.Document
-import play.api.cache.Cache
-import play.api.Play.current
 
 object HttpUtils {
   val url = "http://www.ss.lv"
@@ -65,8 +67,9 @@ object HttpUtils {
     )
   }
 
-  def parseTasks: List[(Task, List[Advertisement])] = {
-    for (t <- tasks) yield (t -> fetchAdverts(t))
+  def parseTasks: List[TaskWithAds] = tasks.map {
+    t =>
+    TaskWithAds(t, fetchAdverts(t))
   }
 
   def mileage(text: String): Option[Int] = {
@@ -93,7 +96,7 @@ object HttpUtils {
     }
   }
 
-  def fetchAdverts(task: Task): List[Advertisement] = {
+  def fetchAdverts(task: Task): List[Ad[Car]] = {
     val connection = Jsoup.connect(url + task.url);
 
     // handle fuel type
@@ -157,19 +160,21 @@ object HttpUtils {
     val prices = doc.select("tr[height=44] td:eq(6)").map(_.text())
     val imageUrls = doc.select("td.msga2 img").map(_.attr("src"))
 
-    val adverts = new ListBuffer[Advertisement]
+    val adverts = new ListBuffer[Ad[Car]]
     for (i <- 0 until descriptions.size) {
       val year = years(i)
       if (year != "-") {
 
-        val ad = Advertisement(
+        val ad = Ad[Car] (
           description = descriptions(i),
           url = urls(i),
-          year = years(i).toInt,
-          engineSize = engines(i),
           imageUrl = imageUrls(i),
-          mileage = mileage(mileages(i)),
-          price = price(prices(i))
+          price = price(prices(i)),
+          details = Car(
+            year = years(i).toInt,
+            engineSize = engines(i),
+              mileage = mileage(mileages(i))
+          )
         )
         adverts += ad
       }

@@ -1,6 +1,6 @@
 package models.tasks
 
-import models.classified.criteria.transport.cars.{CabinType, FuelType, GearboxType}
+import models.classifieds.criteria.transport.cars.{CabinType, FuelType, GearboxType}
 case class Task(
   thePath: String, theName: String) {
   var url: String = "/lv/transport/cars/" + thePath + "/search-result/";

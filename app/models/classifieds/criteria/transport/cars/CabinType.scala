@@ -1,4 +1,4 @@
-package models.classified.criteria.transport.cars
+package models.classifieds.criteria.transport.cars
 
 sealed abstract class CabinType
 

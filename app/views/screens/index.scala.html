@@ -1,0 +1,43 @@
+@(tasksWithAds: List[models.tasks.ui.TaskWithAds])
+@import models.tasks.Task
+@import models.classifieds.Ad
+@import helpers.layouts.main
+
+@main("SS sludinājumi") {
+    @for(ta <- tasksWithAds) {
+        <div class="resultContainer">
+            <h3>@ta.task.name</h3>
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Image</th>
+                        <th>Description</th>
+                        <th>Year</th>
+                        <th>Engine</th>
+                        <th>Mileage</th>
+                        <th class="price">Price</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @for(a <- ta.ads) {
+                        <tr>
+                            <td><img src="@a.imageUrl"/></td>
+                            <td><a href="@a.fullUrl">@a.description</a</td>
+                            <td>@a.details.year</td>
+                            <td>@a.details.engineSize</td>
+                            <td>@a.details.mileage'000</td>
+                            <td>
+                            @for(p <- a.price) {
+                                @p.currency @p.price
+                            }
+                            </td>
+                        </tr>
+                    }
+                    @if(ta.ads.isEmpty) {
+                        <tr><td colspan="6">@Messages("noData")</td></tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+}

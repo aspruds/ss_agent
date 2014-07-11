@@ -1,15 +1,14 @@
-package models.classified
+package models.classifieds
 
+import models.classifieds.details.AdDetails
 import utils.HttpUtils
 
-case class Advertisement(
+case class Ad[A <: AdDetails](
                    description: String,
                    imageUrl: String,
                    url: String,
-                   year: Int,
-                   engineSize: String,
-                   mileage: Option[Int],
-                   price: Option[Price]
+                   price: Option[Price],
+                   details: A
                    ) {
 
   def fullUrl: String = HttpUtils.url + url

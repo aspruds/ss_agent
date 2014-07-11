@@ -1,0 +1,16 @@
+@(title: String)(content: Html)
+@import views.html.helpers.layouts.common.headers
+
+<!DOCTYPE html>
+
+<html>
+    <head>
+        <title>@title</title>
+        @headers()
+    </head>
+    <body>
+        <div class="container">
+            @content
+        </div>
+    </body>
+</html>
