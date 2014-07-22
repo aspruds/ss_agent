@@ -1,7 +1,5 @@
 @(tasksWithAds: List[models.tasks.ui.TaskWithAds])
-@import models.tasks.Task
-@import models.classifieds.Ad
-@import helpers.layouts.main
+@import views.html.helpers.layouts.main
 
 @main("SS sludinājumi") {
     @for(ta <- tasksWithAds) {
@@ -22,7 +20,7 @@
                     @for(a <- ta.ads) {
                         <tr>
                             <td><img src="@a.imageUrl"/></td>
-                            <td><a href="@a.fullUrl">@a.description</a</td>
+                            <td><a href="@a.url">@a.description</a</td>
                             <td>@a.details.year</td>
                             <td>@a.details.engineSize</td>
                             <td>@a.details.mileage'000</td>
