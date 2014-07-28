@@ -16,4 +16,8 @@ libraryDependencies ++= Seq(
   "org.webjars" % "bootstrap-glyphicons" % "bdd2cbfba0"
 )
 
+libraryDependencies ++= List(
+  "org.apache.logging.log4j" % "log4j-1.2-api" % "2.0-rc1"
+)
+
 lazy val root = (project in file(".")).enablePlugins(PlayScala)

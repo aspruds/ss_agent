@@ -128,6 +128,9 @@
     <orderEntry type="library" name="SBT: com.typesafe.play:play-json_2.10:2.3.2" level="project" />
     <orderEntry type="library" scope="TEST" name="SBT: com.typesafe.play:play-test_2.10:2.3.2" level="project" />
     <orderEntry type="library" name="SBT: com.typesafe.play:play_2.10:2.3.2" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.logging.log4j:log4j-1.2-api:2.0-rc1" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.logging.log4j:log4j-api:2.0-rc1" level="project" />
+    <orderEntry type="library" name="SBT: org.apache.logging.log4j:log4j-core:2.0-rc1" level="project" />
   </component>
 </module>
 

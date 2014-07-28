@@ -1,0 +1,39 @@
+<configuration>
+
+    <appender name="FILE_REGULAR" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>${application.home}/logs/application.log</file>
+        <encoder>
+            <pattern>%date %level %logger{15} %message%n</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+            <fileNamePattern>${application.home}/logs/long/%d{yyyy-MM,aux}/application-%d{yyyy-MM-dd}.log.gz</fileNamePattern>
+        </rollingPolicy>
+    </appender>
+
+    <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%highlight(%-5level) %cyan(%logger{15}) - %message%n%xException{5}</pattern>
+        </encoder>
+        <filter class="ch.qos.logback.classic.filter.ThresholdFilter">
+            <level>DEBUG</level>
+        </filter>
+    </appender>
+
+    <logger name="play" level="INFO" />
+    <logger name="application" level="DEBUG" />
+
+    <logger name="models" level="TRACE" />
+    <logger name="controllers" level="TRACE" />
+    <logger name="services" level="TRACE" />
+    <logger name="utils" level="TRACE" />
+    <logger name="views" level="TRACE" />
+
+    <root level="ERROR">
+        <appender-ref ref="STDOUT" />
+        <appender-ref ref="FILE_REGULAR" />
+    </root>
+
+</configuration>
