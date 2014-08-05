@@ -24,7 +24,7 @@ object AdParser {
       val year = years(i)
       if (year != "-") {
 
-        val ad = Ad[Car] (
+        val ad = Ad[Car](
           description = descriptions(i),
           path = urls(i),
           url = task.baseUrl + urls(i),
@@ -48,29 +48,26 @@ object AdParser {
   /**
    * Extract mileage from text
    */
-  private def mileage(text: String): Option[Int] = {
-    if (text.contains(" ")) {
-      val mileageParts = text.split(" ")
-      val mileage = mileageParts(0).toInt
-      Some(mileage)
-    }
-    else {
-      None
-    }
+  private def mileage(text: String): Option[Int] = optionalText(text) {
+    val mileageParts = text.split(" ")
+    val mileage = mileageParts(0).toInt
+    Some(mileage)
   }
 
   /**
    * Extract price,currency pair from text "100 EUR"
    */
-  private def price(text: String): Option[Price] = {
-    if (text.contains(" ")) {
-      val priceParts = text.split(" ")
-      val price = priceParts(0).replace(",", "").toInt
-      val currency = priceParts(1)
-      Some(Price(price, currency))
-    }
-    else {
+  private def price(text: String): Option[Price] = optionalText(text) {
+    val priceParts = text.split(" ")
+    val price = priceParts(0).replace(",", "").toInt
+    val currency = priceParts(1)
+    Some(Price(price, currency))
+  }
+
+  private def optionalText[T](text: String)(transform: => Option[T]): Option[T] = {
+    if (text.contains(" "))
+      transform
+    else
       None
-    }
   }
 }

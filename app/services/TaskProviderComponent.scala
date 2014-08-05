@@ -21,7 +21,8 @@ trait DefaultTaskProviderComponent extends TaskProviderComponent {
         Saab95Petrol(),
         Saab95LPG(),
         VolvoV40Petrol(),
-        VolvoV50()
+        VolvoV50(),
+        VolvoV70Diesel()
       )
   }
 }
